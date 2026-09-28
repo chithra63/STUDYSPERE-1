@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudySphere | Learn Simply</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07131f;--panel:#0d2235;--line:rgba(255,255,255,.09);--text:#eef7ff;--muted:#8ea6ba;--a:#67e8c0;--b:#72a8ff;--user:#163a55}
+body{height:100vh;overflow:hidden;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at 10% 10%,rgba(103,232,192,.14),transparent 28%),radial-gradient(circle at 90% 15%,rgba(114,168,255,.15),transparent 30%),var(--bg)}
+button,textarea{font:inherit}.layout{height:100vh;display:grid;grid-template-columns:270px minmax(0,1fr)}
+.sidebar{display:flex;flex-direction:column;padding:26px 19px;border-right:1px solid var(--line);background:rgba(4,15,26,.66);backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:42px}.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;color:#06151d;font-weight:900;background:linear-gradient(135deg,var(--a),var(--b))}
+.brand-name{font-size:19px;letter-spacing:-.5px}.brand-subtitle{margin-top:2px;color:var(--muted);font-size:11px}
+.label{margin-bottom:12px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.topics{display:grid;gap:7px}
+.topic{padding:12px;border:1px solid transparent;border-radius:12px;color:#b7c9d9;text-align:left;background:transparent;cursor:pointer}.topic:hover{border-color:var(--line);color:var(--text);background:rgba(255,255,255,.035)}
+.bottom{margin-top:auto;padding:14px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.025)}.status{display:flex;align-items:center;gap:8px;color:#b9cad9;font-size:11px}.dot{width:7px;height:7px;border-radius:50%;background:var(--a);box-shadow:0 0 13px rgba(103,232,192,.7)}
+.main{min-width:0;height:100vh;display:flex;flex-direction:column}.top{height:74px;display:flex;align-items:center;justify-content:space-between;padding:0 31px;border-bottom:1px solid var(--line);background:rgba(7,19,31,.42);backdrop-filter:blur(15px)}.top-title{font-size:14px;font-weight:750}.scope{padding:7px 11px;border:1px solid rgba(103,232,192,.18);border-radius:999px;color:#a8f3dc;background:rgba(103,232,192,.06);font-size:10px;font-weight:800}
+.chat{flex:1;overflow-y:auto;padding:40px max(20px,calc((100% - 850px)/2))}.welcome{max-width:690px;margin:7vh auto 0;text-align:center}.mark{width:68px;height:68px;display:grid;place-items:center;margin:0 auto 20px;border:1px solid var(--line);border-radius:22px;font-size:28px;background:linear-gradient(145deg,rgba(103,232,192,.14),rgba(114,168,255,.14))}.welcome h1{margin-bottom:11px;font-size:clamp(29px,4vw,43px);letter-spacing:-2px}.welcome p{color:var(--muted);font-size:14px;line-height:1.7}
+.suggestions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:27px}.suggestion{padding:10px 13px;border:1px solid var(--line);border-radius:999px;color:#b7c8d8;background:rgba(255,255,255,.025);cursor:pointer;font-size:12px}.suggestion:hover{border-color:rgba(103,232,192,.34);color:var(--text)}
+.message{max-width:850px;display:flex;gap:11px;margin:0 auto 19px}.avatar{flex:0 0 34px;width:34px;height:34px;display:grid;place-items:center;border-radius:11px;font-size:11px;font-weight:850}.assistant .avatar{color:#9ff1d8;background:rgba(103,232,192,.11)}.user .avatar{color:#a8caff;background:rgba(114,168,255,.12)}
+.bubble{max-width:min(720px,calc(100% - 45px));padding:13px 16px;border:1px solid var(--line);border-radius:4px 17px 17px 17px;color:#dce9f5;background:var(--panel);font-size:14px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}.user{justify-content:flex-end}.user .bubble{order:-1;border-radius:17px 4px 17px 17px;background:var(--user)}
+.composer-area{padding:17px max(20px,calc((100% - 850px)/2)) 21px;background:linear-gradient(to top,var(--bg) 72%,transparent)}.composer{display:flex;align-items:flex-end;gap:9px;padding:9px;border:1px solid rgba(255,255,255,.11);border-radius:19px;background:rgba(12,30,47,.92);box-shadow:0 20px 65px rgba(0,0,0,.25)}
+#input{flex:1;min-height:45px;max-height:140px;resize:none;border:0;outline:0;padding:11px 10px;color:var(--text);background:transparent;font-size:14px}#input::placeholder{color:#627b91}.send{width:45px;height:45px;display:grid;place-items:center;border:0;border-radius:14px;color:#06151d;background:linear-gradient(135deg,var(--a),var(--b));cursor:pointer;font-size:18px;font-weight:900}.send:disabled{opacity:.48;cursor:not-allowed}.hint{margin-top:8px;color:#526a81;text-align:center;font-size:10px}
+.typing{display:inline-flex;gap:4px}.typing i{width:5px;height:5px;border-radius:50%;background:#7991a7;animation:pulse 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}@keyframes pulse{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-2px)}}
+@media(max-width:760px){body{overflow:auto}.layout{display:block}.sidebar{display:none}.top{padding:0 17px}.chat{padding:28px 15px}.composer-area{padding:12px 13px 16px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<div class="brand"><div class="brand-icon">S</div><div><div class="brand-name">StudySphere</div><div class="brand-subtitle">Interactive Learning AI</div></div></div>
+<div class="label">Learning tools</div>
+<div class="topics">
+<button class="topic" data-q="Explain this academic concept in simple words.">Explain a concept</button>
+<button class="topic" data-q="Help me solve this academic problem step by step.">Solve a problem</button>
+<button class="topic" data-q="Give me a simple example to understand this topic.">Learn with an example</button>
+<button class="topic" data-q="Help me prepare for an exam on this topic.">Exam preparation</button>
+</div>
+<div class="bottom"><div class="status"><span class="dot"></span>Academic learning mode</div></div>
+</aside>
+<main class="main">
+<header class="top"><div class="top-title">Learn something new</div><div class="scope">STUDY ONLY</div></header>
+<section class="chat" id="chat">
+<div class="welcome" id="welcome">
+<div class="mark">✦</div><h1>What do you want to learn?</h1>
+<p>Ask StudySphere anything about your studies. Get simple explanations, examples, and step-by-step help.</p>
+<div class="suggestions">
+<button class="suggestion" data-q="Explain photosynthesis in simple terms.">Explain a concept</button>
+<button class="suggestion" data-q="Solve 2x + 7 = 19 step by step.">Solve a problem</button>
+<button class="suggestion" data-q="What is object-oriented programming?">Learn programming</button>
+</div>
+</div>
+</section>
+<div class="composer-area">
+<form class="composer" id="form">
+<textarea id="input" rows="1" placeholder="Ask a study question..." autocomplete="off"></textarea>
+<button class="send" id="send" type="submit" aria-label="Send">↑</button>
+</form>
+<div class="hint">StudySphere is focused on academic and learning questions.</div>
+</div>
+</main>
+</div>
+<script>
+const chat=document.getElementById("chat"),welcome=document.getElementById("welcome"),form=document.getElementById("form"),input=document.getElementById("input"),send=document.getElementById("send");
+function scroll(){chat.scrollTop=chat.scrollHeight}
+function add(text,role){const m=document.createElement("div");m.className="message "+role;const a=document.createElement("div");a.className="avatar";a.textContent=role==="user"?"YOU":"S";const b=document.createElement("div");b.className="bubble";b.textContent=text;m.append(a,b);chat.appendChild(m);scroll()}
+function typing(){const m=document.createElement("div");m.id="typing";m.className="message assistant";const a=document.createElement("div");a.className="avatar";a.textContent="S";const b=document.createElement("div");b.className="bubble";b.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';m.append(a,b);chat.appendChild(m);scroll()}
+async function sendMessage(value){const message=value.trim();if(!message||send.disabled)return;welcome?.remove();add(message,"user");input.value="";input.style.height="45px";send.disabled=true;typing();try{const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message})});const d=await r.json();document.getElementById("typing")?.remove();add(r.ok?d.answer:(d.error||"Something went wrong. Please try again."),"assistant")}catch(e){document.getElementById("typing")?.remove();add("I couldn't connect to StudySphere right now. Please try again.","assistant")}finally{send.disabled=false;input.focus()}}
+form.addEventListener("submit",e=>{e.preventDefault();sendMessage(input.value)});input.addEventListener("input",()=>{input.style.height="45px";input.style.height=Math.min(input.scrollHeight,140)+"px"});input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();form.requestSubmit()}});
+document.querySelectorAll("[data-q]").forEach(b=>b.addEventListener("click",()=>{input.value=b.dataset.q;input.focus();input.dispatchEvent(new Event("input"))}));
+</script>
+</body>
+</html>
